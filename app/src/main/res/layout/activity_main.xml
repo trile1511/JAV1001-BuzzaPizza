@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mercury"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -91,6 +92,16 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="9dp"
+            tools:listitem="@layout/activity_main_history_order_list_item"
+            tools:listitemCount="3" />
 
     </LinearLayout>
 
