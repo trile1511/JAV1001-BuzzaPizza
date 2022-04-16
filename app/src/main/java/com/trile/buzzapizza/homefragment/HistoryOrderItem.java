@@ -1,4 +1,4 @@
-package com.trile.buzzapizza;
+package com.trile.buzzapizza.homefragment;
 
 import android.os.Parcel;
 import android.os.Parcelable;

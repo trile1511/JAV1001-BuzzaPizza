@@ -1,4 +1,4 @@
-package com.trile.buzzapizza;
+package com.trile.buzzapizza.homefragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.trile.buzzapizza.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
