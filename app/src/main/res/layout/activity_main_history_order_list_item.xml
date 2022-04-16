@@ -18,6 +18,7 @@
             android:src="@drawable/ic_rounded_corners_horizontal_bar" />
 
         <TextView
+            android:id="@+id/toppings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
