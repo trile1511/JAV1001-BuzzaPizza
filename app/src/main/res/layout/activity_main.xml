@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Good Morning!" />
+            android:text="@string/greeting" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Customize Pizza"
+                android:text="@string/btn_customize_pizza"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="History Orders"
+                android:text="@string/text_history_orders"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
