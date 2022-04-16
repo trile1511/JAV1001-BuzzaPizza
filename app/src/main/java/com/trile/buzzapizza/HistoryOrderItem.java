@@ -1,9 +1,12 @@
 package com.trile.buzzapizza;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryOrderItem {
+public class HistoryOrderItem implements Parcelable {
     private List<String> toppings = new ArrayList();
     private String toppingsText;
 
@@ -30,6 +33,34 @@ public class HistoryOrderItem {
         String text = toppingsToConvert.toString();
         this.toppingsText = text.substring(1, text.length() - 1);   // Remove the square brackets []
     }
+
+    protected HistoryOrderItem(Parcel in) {
+        toppings = in.createStringArrayList();
+        toppingsText = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(toppings);
+        dest.writeString(toppingsText);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<HistoryOrderItem> CREATOR = new Creator<HistoryOrderItem>() {
+        @Override
+        public HistoryOrderItem createFromParcel(Parcel in) {
+            return new HistoryOrderItem(in);
+        }
+
+        @Override
+        public HistoryOrderItem[] newArray(int size) {
+            return new HistoryOrderItem[size];
+        }
+    };
 
     public List<String> getToppings() {
         return toppings;
