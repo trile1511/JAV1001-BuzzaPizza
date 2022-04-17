@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Mozzarella, BBQ sauce, tomato, mushrooms, and olivers."
+            android:textColor="@color/slate_gray"
             android:textSize="13sp" />
 
     </LinearLayout>
