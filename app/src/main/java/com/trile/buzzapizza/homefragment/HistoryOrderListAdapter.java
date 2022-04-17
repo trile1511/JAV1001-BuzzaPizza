@@ -51,7 +51,6 @@ class HistoryOrderListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.toppingsView = view.findViewById(R.id.toppings);
             holder.btnRemove = view.findViewById(R.id.btn_remove);
-            holder.btnRemove.setOnClickListener(v -> onRemoveOrder(i));
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -62,6 +61,8 @@ class HistoryOrderListAdapter extends BaseAdapter {
         } else if (isBtnRemoveVisible && holder.btnRemove.getVisibility() != View.VISIBLE) {
             holder.btnRemove.setVisibility(View.VISIBLE);
         }
+        holder.btnRemove.setOnClickListener(v -> onRemoveOrder(i));
+
         holder.toppingsView.setText(items.get(i).getToppingsText());
         return view;
     }
