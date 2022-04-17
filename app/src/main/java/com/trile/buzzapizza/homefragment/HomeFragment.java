@@ -28,7 +28,11 @@ public class HomeFragment extends Fragment {
 
     private TextView textViewGreeting;
 
+    private TextView btnEditListViewHistoryOrder;
+    private boolean isEdit = false;
+
     private ListView listViewHistoryOrders;
+    private HistoryOrderListAdapter historyOrderListAdapter;
     private List<HistoryOrderItem> historyOrderItems = new ArrayList();
 
     public HomeFragment() {
@@ -66,9 +70,12 @@ public class HomeFragment extends Fragment {
 
         textViewGreeting = view.findViewById(R.id.text_view_greeting);
 
+        btnEditListViewHistoryOrder = view.findViewById(R.id.btn_edit_list_view_history_order);
+
         listViewHistoryOrders = view.findViewById(R.id.list_view_history_orders);
 
         setupTextViewGreeting();
+        setupEditButton();
         setupHistoryOrdersListView();
 
         return view;
@@ -83,7 +90,7 @@ public class HomeFragment extends Fragment {
         String greeting = getResources().getString(R.string.greeting);
 
         String dayTimeToShow;
-        if (hour >= 6) {
+        if (hour >= 18) {
             dayTimeToShow = String.format(greeting, dayTime[2]);
         } else if (hour >= 12) {
             dayTimeToShow = String.format(greeting, dayTime[1]);
@@ -96,7 +103,21 @@ public class HomeFragment extends Fragment {
         textViewGreeting.setText(dayTimeToShow);
     }
 
+    private void setupEditButton() {
+        btnEditListViewHistoryOrder.setOnClickListener(view -> {
+            if (!isEdit) {
+                isEdit = true;
+                btnEditListViewHistoryOrder.setText(R.string.done);
+            } else {
+                isEdit = false;
+                btnEditListViewHistoryOrder.setText(R.string.edit);
+            }
+            historyOrderListAdapter.toggleBtnRemoveVisibility();
+        });
+    }
+
     private void setupHistoryOrdersListView() {
-        listViewHistoryOrders.setAdapter(new HistoryOrderListAdapter(getActivity(), historyOrderItems));
+        historyOrderListAdapter = new HistoryOrderListAdapter(getActivity(), historyOrderItems);
+        listViewHistoryOrders.setAdapter(historyOrderListAdapter);
     }
 }
