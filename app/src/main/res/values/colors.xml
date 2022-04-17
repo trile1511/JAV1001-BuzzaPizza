@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mercury">#FFE5E5E5</color>
     <color name="slate_gray">#FF6C7693</color>
+    <color name="cadet_gray">#338F9BBA</color>
+    <color name="whisper">#FFFAFAFC</color>
 </resources>
