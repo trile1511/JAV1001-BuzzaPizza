@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.interfaces.FragmentAction;
+import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +30,8 @@ public class HomeFragment extends Fragment {
     private static final String HISTORY_ORDER_ITEMS = "HISTORY_ORDER_ITEMS";
 
     private TextView textViewGreeting;
+
+    private LinearLayout btnCustomizePizza;
 
     private TextView btnEditListViewHistoryOrder;
     private boolean isEdit = false;
@@ -70,11 +75,14 @@ public class HomeFragment extends Fragment {
 
         textViewGreeting = view.findViewById(R.id.text_view_greeting);
 
+        btnCustomizePizza = view.findViewById(R.id.btn_customize_pizza);
+
         btnEditListViewHistoryOrder = view.findViewById(R.id.btn_edit_list_view_history_order);
 
         listViewHistoryOrders = view.findViewById(R.id.list_view_history_orders);
 
         setupTextViewGreeting();
+        setupButtonCustomizePizza();
         setupEditButton();
         setupHistoryOrdersListView();
 
@@ -101,6 +109,12 @@ public class HomeFragment extends Fragment {
         }
         // Show greeting based on current day time
         textViewGreeting.setText(dayTimeToShow);
+    }
+
+    private void setupButtonCustomizePizza() {
+        btnCustomizePizza.setOnClickListener(view -> {
+            ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CUSTOMIZE_PIZZA);
+        });
     }
 
     private void setupEditButton() {
