@@ -13,10 +13,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/btn_cancel"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
-            android:background="@drawable/circle_white"
+            android:background="@drawable/btn_circle_cancel"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="15dp"
             android:src="@drawable/ic_cross" />
 
@@ -41,6 +44,7 @@
         android:textStyle="bold" />
 
     <GridView
+        android:id="@+id/gridview_toppings"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -56,11 +60,13 @@
         android:layout_marginTop="20dp">
 
         <Button
+            android:id="@+id/btn_back"
             style="@style/Theme.BuzzaPizza.ButtonNavigation"
             android:layout_alignParentStart="true"
             android:text="Back" />
 
         <Button
+            android:id="@+id/btn_next"
             style="@style/Theme.BuzzaPizza.ButtonNavigation"
             android:layout_alignParentEnd="true"
             android:text="Next"
