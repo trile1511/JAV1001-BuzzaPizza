@@ -52,7 +52,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +67,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +82,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_city"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +97,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_zip_code"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textPostalAddress"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
