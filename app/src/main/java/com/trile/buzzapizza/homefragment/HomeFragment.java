@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.trile.buzzapizza.R;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
@@ -113,7 +114,7 @@ public class HomeFragment extends Fragment {
 
     private void setupButtonCustomizePizza() {
         btnCustomizePizza.setOnClickListener(view -> {
-            ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CUSTOMIZE_PIZZA);
+            ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CUSTOMIZE_PIZZA, null);
         });
     }
 
@@ -133,5 +134,14 @@ public class HomeFragment extends Fragment {
     private void setupHistoryOrdersListView() {
         historyOrderListAdapter = new HistoryOrderListAdapter(getActivity(), historyOrderItems);
         listViewHistoryOrders.setAdapter(historyOrderListAdapter);
+
+        listViewHistoryOrders.setOnItemClickListener((adapterView, view, i, l) -> {
+            List<String> historyOrderToppings = historyOrderListAdapter.getItems().get(i).getToppings();
+            Gson gson = new Gson();
+            ((FragmentCommunicator) getActivity()).takeAction(
+                    FragmentAction.UPDATE_HISTORY_ORDER,
+                    gson.toJson(historyOrderToppings)
+            );
+        });
     }
 }

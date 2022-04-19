@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.trile.buzzapizza.homefragment.HistoryOrderItem;
 import com.trile.buzzapizza.homefragment.HomeFragment;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 import com.trile.buzzapizza.toppingsfragment.ToppingsFragment;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,24 +41,28 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
     private List<HistoryOrderItem> getMockData() {
         List<HistoryOrderItem> items = new ArrayList();
         items.add(new HistoryOrderItem(
-                Arrays.asList("mozzarella", "BBQ sauce", "tomato", "mushrooms", "olives"))
+                Arrays.asList("tomatoes", "mushrooms", "olives", "Jalapenos"))
         );
         items.add(new HistoryOrderItem(
-                Arrays.asList("mozzarella", "basil pesto sauce", "a blend of healthy veggies"))
+                Arrays.asList("onions", "Pepperoni", "tomatoes"))
         );
         items.add(new HistoryOrderItem(
-                Arrays.asList("classic crust", "mozzarella", "tomato sauce", "double pepperoni"))
+                Arrays.asList("Mushrooms", "bacon", "green peppers", "olives"))
+        );
+        items.add(new HistoryOrderItem(
+                Arrays.asList("bacon", "Green peppers", "pepperoni", "olives"))
         );
         return items;
     }
 
     @Override
-    public void takeAction(FragmentAction action) {
+    public void takeAction(FragmentAction action, String jsonData) {
         switch (action) {
             case CUSTOMIZE_PIZZA:
                 onClickCustomizePizza();
                 break;
             case UPDATE_HISTORY_ORDER:
+                onClickHistoryOrderItem(jsonData);
                 break;
             case BACK_HOME_PAGE:
                 break;
@@ -74,6 +81,19 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
 
     public void onClickCustomizePizza() {
         Fragment toppingsFragment = new ToppingsFragment();
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_main, toppingsFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void onClickHistoryOrderItem(String jsonData) {
+        Type toppingListType = new TypeToken<ArrayList<String>>() {}.getType();
+        Gson gson = new Gson();
+        ArrayList<String> selectedToppings = gson.fromJson(jsonData, toppingListType);
+
+        Fragment toppingsFragment = ToppingsFragment.newInstance(selectedToppings);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

@@ -15,7 +15,7 @@ public class HistoryOrderItem implements Parcelable {
 
         // Convert from array list of toppings to a string with comma-separated toppings
         // ["Mozzarella", "BBQ Sauce", "Tomato"] => "Mozzarella, BBQ Sauce, and Tomato"
-        List<String> toppingsToConvert = this.toppings;
+        List<String> toppingsToConvert = new ArrayList<>(this.toppings);
         String firstTopping = toppingsToConvert.get(0);
         String lastTopping = toppingsToConvert.get(toppingsToConvert.size() - 1);
         // Capitalize first letter of first topping in the list

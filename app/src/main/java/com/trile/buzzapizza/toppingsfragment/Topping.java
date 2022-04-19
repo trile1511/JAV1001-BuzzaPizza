@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.trile.buzzapizza.R;
 
 public class Topping implements Parcelable {
@@ -88,5 +90,22 @@ public class Topping implements Parcelable {
             return Type.JALAPENOS.getDrawableResourceId();
         }
         return Type.TOMATOES.getDrawableResourceId();
+    }
+
+    @Override
+    public int hashCode() {
+        return name.toLowerCase().hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        Topping topping = (Topping) obj;
+        return this.name.equalsIgnoreCase(topping.name);
     }
 }

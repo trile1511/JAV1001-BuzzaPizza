@@ -1,17 +1,13 @@
 package com.trile.buzzapizza.toppingsfragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.core.content.res.ResourcesCompat;
 
 import com.trile.buzzapizza.R;
 
@@ -89,6 +85,21 @@ public class ToppingsGridAdapter extends BaseAdapter {
     public void onClickToppingCard(int position) {
         Boolean currentSelectionStatus = toppingSelectionStatuses.get(position);
         toppingSelectionStatuses.set(position, !currentSelectionStatus);
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedToppings(List<String> selectedToppings) {
+        Collections.fill(this.toppingSelectionStatuses, false);
+
+        String tp;
+        int itemIndex;
+        for (int i = 0; i < selectedToppings.size(); i++) {
+            tp = selectedToppings.get(i);
+            itemIndex = toppingList.indexOf(new Topping(tp));
+            if (itemIndex != -1) {
+                toppingSelectionStatuses.set(itemIndex, true);
+            }
+        }
         notifyDataSetChanged();
     }
 

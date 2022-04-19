@@ -1,11 +1,9 @@
 package com.trile.buzzapizza.toppingsfragment;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -13,6 +11,8 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.interfaces.FragmentAction;
+import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class ToppingsFragment extends Fragment {
             )
     );
 
-    private List<Topping> toppings = new ArrayList<>();
+    private List<String> selectedToppings = new ArrayList<>();
 
     private ImageView btnCancel;
 
@@ -59,13 +59,13 @@ public class ToppingsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param toppings topping items to show on grid view.
+     * @param selectedTopping selected topping items to be checked on grid view.
      * @return A new instance of fragment ToppingsFragment.
      */
-    public static ToppingsFragment newInstance(List<Topping> toppings) {
+    public static ToppingsFragment newInstance(ArrayList<String> selectedTopping) {
         ToppingsFragment fragment = new ToppingsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(TOPPINGS, (ArrayList<? extends Parcelable>) toppings);
+        args.putStringArrayList(TOPPINGS, selectedTopping);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,7 +74,7 @@ public class ToppingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            toppings = getArguments().getParcelableArrayList(TOPPINGS);
+            selectedToppings = getArguments().getStringArrayList(TOPPINGS);
         }
     }
 
@@ -100,5 +100,7 @@ public class ToppingsFragment extends Fragment {
         gridViewToppings.setOnItemClickListener((adapterView, view, i, l) -> {
             toppingsGridAdapter.onClickToppingCard(i);
         });
+
+        toppingsGridAdapter.setSelectedToppings(selectedToppings);
     }
 }

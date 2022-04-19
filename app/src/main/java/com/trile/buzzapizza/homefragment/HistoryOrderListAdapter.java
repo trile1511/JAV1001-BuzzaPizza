@@ -43,6 +43,10 @@ class HistoryOrderListAdapter extends BaseAdapter {
         return i;
     }
 
+    public List<HistoryOrderItem> getItems() {
+        return items;
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
