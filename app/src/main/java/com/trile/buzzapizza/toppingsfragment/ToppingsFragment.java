@@ -1,20 +1,21 @@
 package com.trile.buzzapizza.toppingsfragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+
 import com.trile.buzzapizza.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,10 +28,26 @@ public class ToppingsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TOPPINGS = "TOPPINGS";
 
-    private List<Toppings> toppings;
+    private static final List<Topping> PREDEFINED_TOPPINGS = new ArrayList<>(
+            Arrays.asList(
+                    new Topping("Pepperoni"),
+                    new Topping("Bacon"),
+                    new Topping("Mushrooms"),
+                    new Topping("Tomatoes"),
+                    new Topping("Olives"),
+                    new Topping("Green peppers"),
+                    new Topping("Onions"),
+                    new Topping("Jalapenos")
+            )
+    );
+
+    private List<Topping> toppings = new ArrayList<>();
 
     private ImageView btnCancel;
+
     private GridView gridViewToppings;
+    private ToppingsGridAdapter toppingsGridAdapter;
+
     private Button btnBack;
     private Button btnNext;
 
@@ -45,7 +62,7 @@ public class ToppingsFragment extends Fragment {
      * @param toppings topping items to show on grid view.
      * @return A new instance of fragment ToppingsFragment.
      */
-    public static ToppingsFragment newInstance(List<Toppings> toppings) {
+    public static ToppingsFragment newInstance(List<Topping> toppings) {
         ToppingsFragment fragment = new ToppingsFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(TOPPINGS, (ArrayList<? extends Parcelable>) toppings);
@@ -72,6 +89,16 @@ public class ToppingsFragment extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnNext = view.findViewById(R.id.btn_next);
 
+        setupGridViewToppings();
+
         return view;
+    }
+
+    private void setupGridViewToppings() {
+        toppingsGridAdapter = new ToppingsGridAdapter(getActivity(), PREDEFINED_TOPPINGS);
+        gridViewToppings.setAdapter(toppingsGridAdapter);
+        gridViewToppings.setOnItemClickListener((adapterView, view, i, l) -> {
+            toppingsGridAdapter.onClickToppingCard(i);
+        });
     }
 }

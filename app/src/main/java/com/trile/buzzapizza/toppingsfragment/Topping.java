@@ -2,10 +2,11 @@ package com.trile.buzzapizza.toppingsfragment;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.trile.buzzapizza.R;
 
-class Toppings implements Parcelable {
+public class Topping implements Parcelable {
     public enum Type {
         PEPPERONI(R.drawable.ic_topping_pepperoni),
         BACON(R.drawable.ic_topping_bacon),
@@ -29,11 +30,11 @@ class Toppings implements Parcelable {
 
     private String name;
 
-    public Toppings(String name) {
+    public Topping(String name) {
         this.name = name;
     }
 
-    protected Toppings(Parcel in) {
+    protected Topping(Parcel in) {
         name = in.readString();
     }
 
@@ -47,18 +48,21 @@ class Toppings implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Toppings> CREATOR = new Creator<Toppings>() {
+    public static final Creator<Topping> CREATOR = new Creator<Topping>() {
         @Override
-        public Toppings createFromParcel(Parcel in) {
-            return new Toppings(in);
+        public Topping createFromParcel(Parcel in) {
+            return new Topping(in);
         }
 
         @Override
-        public Toppings[] newArray(int size) {
-            return new Toppings[size];
+        public Topping[] newArray(int size) {
+            return new Topping[size];
         }
     };
 
+    public String getName() {
+        return name;
+    }
 
     public int getDrawableResourceId() {
         if (this.name.equalsIgnoreCase(Type.PEPPERONI.name())) {
@@ -71,7 +75,12 @@ class Toppings implements Parcelable {
             return Type.TOMATOES.getDrawableResourceId();
         } else if (this.name.equalsIgnoreCase(Type.OLIVES.name())) {
             return Type.OLIVES.getDrawableResourceId();
-        } else if (this.name.equalsIgnoreCase(Type.GREEN_PEPPERS.name())) {
+        } else if (this.name.equalsIgnoreCase(
+                TextUtils.join(
+                        " ",
+                        Type.GREEN_PEPPERS.name().split("_")
+                )
+        )) {
             return Type.GREEN_PEPPERS.getDrawableResourceId();
         } else if (this.name.equalsIgnoreCase(Type.ONIONS.name())) {
             return Type.ONIONS.getDrawableResourceId();
