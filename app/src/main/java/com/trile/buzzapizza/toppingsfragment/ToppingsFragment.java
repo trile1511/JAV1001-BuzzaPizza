@@ -112,9 +112,19 @@ public class ToppingsFragment extends Fragment {
         toppingsGridAdapter = new ToppingsGridAdapter(getActivity(), PREDEFINED_TOPPINGS);
         gridViewToppings.setAdapter(toppingsGridAdapter);
         gridViewToppings.setOnItemClickListener((adapterView, view, i, l) -> {
-            toppingsGridAdapter.onClickToppingCard(i);
+            Boolean isAllToppingsDeselected = toppingsGridAdapter.onClickToppingCard(i);
+            if (isAllToppingsDeselected) {
+                btnNext.setEnabled(false);
+            } else {
+                btnNext.setEnabled(true);
+            }
         });
 
-        toppingsGridAdapter.setSelectedToppings(selectedToppings);
+        if (selectedToppings.size() > 0) {
+            toppingsGridAdapter.setSelectedToppings(selectedToppings);
+            btnNext.setEnabled(true);
+        } else {
+            btnNext.setEnabled(false);
+        }
     }
 }

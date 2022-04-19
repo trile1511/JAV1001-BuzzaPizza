@@ -82,10 +82,13 @@ public class ToppingsGridAdapter extends BaseAdapter {
         return view;
     }
 
-    public void onClickToppingCard(int position) {
+    public Boolean onClickToppingCard(int position) {
         Boolean currentSelectionStatus = toppingSelectionStatuses.get(position);
         toppingSelectionStatuses.set(position, !currentSelectionStatus);
         notifyDataSetChanged();
+
+        // Specify whether there is no topping selected to enable Next button or not
+        return toppingSelectionStatuses.indexOf(true) == - 1;
     }
 
     public void setSelectedToppings(List<String> selectedToppings) {
