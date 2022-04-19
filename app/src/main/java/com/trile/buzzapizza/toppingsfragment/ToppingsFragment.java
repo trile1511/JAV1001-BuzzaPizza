@@ -89,9 +89,23 @@ public class ToppingsFragment extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnNext = view.findViewById(R.id.btn_next);
 
+        setupButtonCancel();
+        setupButtonBack();
         setupGridViewToppings();
 
         return view;
+    }
+
+    private void setupButtonCancel() {
+        btnCancel.setOnClickListener(view ->
+                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CANCEL, null)
+        );
+    }
+
+    private void setupButtonBack() {
+        btnBack.setOnClickListener(view ->
+                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.BACK_HOME_PAGE, null)
+        );
     }
 
     private void setupGridViewToppings() {

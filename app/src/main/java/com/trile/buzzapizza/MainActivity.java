@@ -65,14 +65,14 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
                 onClickHistoryOrderItem(jsonData);
                 break;
             case BACK_HOME_PAGE:
+            case CANCEL:
+                onClickBackHomePage();
                 break;
             case NEXT_FILL_ORDER_INFO:
                 break;
             case BACK_SELECT_TOPPINGS:
                 break;
             case PROCEED_ORDER:
-                break;
-            case CANCEL:
                 break;
             default:
                 break;
@@ -98,6 +98,15 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_main, toppingsFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void onClickBackHomePage() {
+        Fragment homeFragment = HomeFragment.newInstance(getMockData());
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_main, homeFragment);
         fragmentTransaction.commit();
     }
 }
