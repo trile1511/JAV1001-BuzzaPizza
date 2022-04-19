@@ -116,7 +116,7 @@
             android:layout_weight="1"
             android:divider="@android:color/transparent"
             android:dividerHeight="9dp"
-            tools:listitem="@layout/activity_main_history_order_list_item"
+            tools:listitem="@layout/fragment_home_history_order_list_item"
             tools:listitemCount="3" />
 
     </LinearLayout>

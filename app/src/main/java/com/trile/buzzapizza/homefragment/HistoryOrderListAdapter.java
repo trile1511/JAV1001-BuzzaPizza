@@ -51,7 +51,7 @@ class HistoryOrderListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         if (view == null) {
-            view = inflater.inflate(R.layout.activity_main_history_order_list_item, null);
+            view = inflater.inflate(R.layout.fragment_home_history_order_list_item, null);
             holder = new ViewHolder();
             holder.toppingsView = view.findViewById(R.id.toppings);
             holder.btnRemove = view.findViewById(R.id.btn_remove);
