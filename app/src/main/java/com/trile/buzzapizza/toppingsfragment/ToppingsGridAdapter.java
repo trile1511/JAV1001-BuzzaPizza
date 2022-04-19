@@ -91,6 +91,21 @@ public class ToppingsGridAdapter extends BaseAdapter {
         return toppingSelectionStatuses.indexOf(true) == - 1;
     }
 
+    public List<String> getSelectedToppings() {
+        List<String> selectedToppings = new ArrayList<>();
+
+        Boolean isSelected;
+        String toppingName;
+        for (int i = 0; i < toppingSelectionStatuses.size(); i++) {
+            isSelected = toppingSelectionStatuses.get(i);
+            if (isSelected) {
+                toppingName = toppingList.get(i).getName();
+                selectedToppings.add(toppingName);
+            }
+        }
+        return selectedToppings;
+    }
+
     public void setSelectedToppings(List<String> selectedToppings) {
         Collections.fill(this.toppingSelectionStatuses, false);
 

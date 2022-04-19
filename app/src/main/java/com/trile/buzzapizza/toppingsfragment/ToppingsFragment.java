@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.trile.buzzapizza.R;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
@@ -91,6 +92,7 @@ public class ToppingsFragment extends Fragment {
 
         setupButtonCancel();
         setupButtonBack();
+        setupButtonNext();
         setupGridViewToppings();
 
         return view;
@@ -106,6 +108,16 @@ public class ToppingsFragment extends Fragment {
         btnBack.setOnClickListener(view ->
                 ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.BACK_HOME_PAGE, null)
         );
+    }
+
+    private void setupButtonNext() {
+        btnNext.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            ((FragmentCommunicator) getActivity()).takeAction(
+                    FragmentAction.NEXT_FILL_ORDER_INFO,
+                    gson.toJson(toppingsGridAdapter.getSelectedToppings())
+            );
+        });
     }
 
     private void setupGridViewToppings() {

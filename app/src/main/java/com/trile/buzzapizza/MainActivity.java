@@ -13,6 +13,7 @@ import com.trile.buzzapizza.homefragment.HistoryOrderItem;
 import com.trile.buzzapizza.homefragment.HomeFragment;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
+import com.trile.buzzapizza.orderfragment.OrderFragment;
 import com.trile.buzzapizza.toppingsfragment.ToppingsFragment;
 
 import java.lang.reflect.Type;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
                 onClickBackHomePage();
                 break;
             case NEXT_FILL_ORDER_INFO:
+                onClickNextFillOrderInfo(jsonData);
                 break;
             case BACK_SELECT_TOPPINGS:
                 break;
@@ -107,6 +109,19 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_main, homeFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void onClickNextFillOrderInfo(String jsonData) {
+        Type toppingListType = new TypeToken<ArrayList<String>>() {}.getType();
+        Gson gson = new Gson();
+        ArrayList<String> selectedToppings = gson.fromJson(jsonData, toppingListType);
+
+        Fragment orderFragment = OrderFragment.newInstance(selectedToppings);
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_main, orderFragment);
         fragmentTransaction.commit();
     }
 }
