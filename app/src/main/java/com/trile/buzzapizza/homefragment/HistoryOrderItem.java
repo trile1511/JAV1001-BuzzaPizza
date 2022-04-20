@@ -5,8 +5,11 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class HistoryOrderItem implements Parcelable {
+    private final String id = UUID.randomUUID().toString();
     private List<String> toppings = new ArrayList<>();
     private String name = "";
     private String address = "";
@@ -100,6 +103,10 @@ public class HistoryOrderItem implements Parcelable {
         }
     };
 
+    public String getId() {
+        return id;
+    }
+
     public List<String> getToppings() {
         return toppings;
     }
@@ -143,5 +150,18 @@ public class HistoryOrderItem implements Parcelable {
 
     public String getToppingsText() {
         return toppingsText;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HistoryOrderItem that = (HistoryOrderItem) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

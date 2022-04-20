@@ -1,6 +1,7 @@
 package com.trile.buzzapizza.homefragment;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.interfaces.FragmentAction;
+import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ class HistoryOrderListAdapter extends BaseAdapter {
     private final Context context;
     private final LayoutInflater inflater;
 
-    private final List<HistoryOrderItem> items = new ArrayList();
+    private final List<HistoryOrderItem> items = new ArrayList<>();
     private boolean isBtnRemoveVisible = false;
 
     public HistoryOrderListAdapter(Context context, List<HistoryOrderItem> items) {
@@ -51,7 +54,7 @@ class HistoryOrderListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         if (view == null) {
-            view = inflater.inflate(R.layout.fragment_home_history_order_list_item, null);
+            view = inflater.inflate(R.layout.fragment_home_history_order_list_item, viewGroup, false);
             holder = new ViewHolder();
             holder.toppingsView = view.findViewById(R.id.toppings);
             holder.btnRemove = view.findViewById(R.id.btn_remove);
@@ -81,6 +84,16 @@ class HistoryOrderListAdapter extends BaseAdapter {
                 .setPositiveButton("Confirm",
                         (dialog, which) -> {
                             items.remove(position);
+                            try {
+                                FragmentCommunicator fc = (FragmentCommunicator) context;
+                                fc.takeAction(FragmentAction.REMOVE_HISTORY_ORDER, String.valueOf(position));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(
+                                        HistoryOrderListAdapter.class.getCanonicalName(),
+                                        "onRemoveOrder: e = ", e
+                                );
+                            }
                             notifyDataSetChanged();
                         })
                 .show();
