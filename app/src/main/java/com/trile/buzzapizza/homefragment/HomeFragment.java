@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
 
     private ListView listViewHistoryOrders;
     private HistoryOrderListAdapter historyOrderListAdapter;
-    private List<HistoryOrderItem> historyOrderItems = new ArrayList();
+    private List<HistoryOrderItem> historyOrderItems = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -114,7 +114,10 @@ public class HomeFragment extends Fragment {
 
     private void setupButtonCustomizePizza() {
         btnCustomizePizza.setOnClickListener(view -> {
-            ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CUSTOMIZE_PIZZA, null);
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(FragmentAction.CUSTOMIZE_PIZZA, null);
+            }
         });
     }
 
@@ -136,12 +139,15 @@ public class HomeFragment extends Fragment {
         listViewHistoryOrders.setAdapter(historyOrderListAdapter);
 
         listViewHistoryOrders.setOnItemClickListener((adapterView, view, i, l) -> {
-            List<String> historyOrderToppings = historyOrderListAdapter.getItems().get(i).getToppings();
+            HistoryOrderItem historyOrderItem = historyOrderListAdapter.getItems().get(i);
             Gson gson = new Gson();
-            ((FragmentCommunicator) getActivity()).takeAction(
-                    FragmentAction.UPDATE_HISTORY_ORDER,
-                    gson.toJson(historyOrderToppings)
-            );
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(
+                        FragmentAction.UPDATE_HISTORY_ORDER,
+                        gson.toJson(historyOrderItem)
+                );
+            }
         });
     }
 }

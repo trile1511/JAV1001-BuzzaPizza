@@ -30,9 +30,11 @@ import java.util.List;
 public class OrderFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String SELECTED_TOPPINGS = "SELECTED_TOPPINGS";
-
-    private List<String> selectedToppings;
+    private static final String HISTORY_ORDER_ITEM = "HISTORY_ORDER_ITEM";
+    private final List<Boolean> textFieldsFilled = new ArrayList<>(
+            Arrays.asList(false, false, false, false)
+    );
+    private HistoryOrderItem historyOrderItem;
 
     private ImageView btnCancel;
 
@@ -40,9 +42,7 @@ public class OrderFragment extends Fragment {
     private TextInputEditText editTextAddress;
     private TextInputEditText editTextCity;
     private TextInputEditText editTextZipCode;
-    private List<Boolean> textFieldsFilled = new ArrayList<>(
-            Arrays.asList(false, false, false, false)
-    );
+    private List<String> selectedToppings = new ArrayList<>();
 
     private Button btnBack;
     private Button btnOrder;
@@ -55,13 +55,14 @@ public class OrderFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param selectedToppings selected topping items to be save on proceeding order.
+     * @param historyOrderItem history order item to keep track through navigation
+     *                         from home page until order page.
      * @return A new instance of fragment NavigationFragment.
      */
-    public static OrderFragment newInstance(ArrayList<String> selectedToppings) {
+    public static OrderFragment newInstance(HistoryOrderItem historyOrderItem) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(SELECTED_TOPPINGS, selectedToppings);
+        args.putParcelable(HISTORY_ORDER_ITEM, historyOrderItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +71,10 @@ public class OrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            selectedToppings = getArguments().getStringArrayList(SELECTED_TOPPINGS);
+            historyOrderItem = getArguments().getParcelable(HISTORY_ORDER_ITEM);
+            selectedToppings = historyOrderItem.getToppings();
+        } else {
+            historyOrderItem = new HistoryOrderItem(selectedToppings);
         }
     }
 
@@ -105,9 +109,12 @@ public class OrderFragment extends Fragment {
     }
 
     private void setupButtonCancel() {
-        btnCancel.setOnClickListener(view ->
-                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CANCEL, null)
-        );
+        btnCancel.setOnClickListener(view -> {
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(FragmentAction.CANCEL, null);
+            }
+        });
     }
 
     private void setupEditText(TextInputEditText editText, int position) {
@@ -120,9 +127,10 @@ public class OrderFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // If this field has text AND all other fields are filled
+                // If this field has text
                 if (!editable.toString().trim().isEmpty()) {
                     textFieldsFilled.set(position, true);
+                    // AND all other fields are filled
                     if (!textFieldsFilled.contains(false)) {
                         btnOrder.setEnabled(true);
                     }
@@ -134,9 +142,43 @@ public class OrderFragment extends Fragment {
         });
         editText.setOnFocusChangeListener((view, focused) -> {
             TextInputEditText et = (TextInputEditText) view;
-            // If field has lost focused, but still empty => Show error
-            if (!focused && et.getText().toString().isEmpty()) {
-                et.setError(getResources().getString(R.string.field_required));
+            // If field has lost focused
+            if (!focused) {
+                // But still empty => Show error
+                if (et.getText() != null && et.getText().toString().isEmpty()) {
+                    et.setError(getResources().getString(R.string.field_required));
+                } else {
+                    // Field is filled => Save it
+                    Editable ed;
+                    switch (position) {
+                        case 0:
+                            ed = editTextName.getText();
+                            if (ed != null) {
+                                historyOrderItem.setName(ed.toString());
+                            }
+                            break;
+                        case 1:
+                            ed = editTextAddress.getText();
+                            if (ed != null) {
+                                historyOrderItem.setAddress(ed.toString());
+                            }
+                            break;
+                        case 2:
+                            ed = editTextCity.getText();
+                            if (ed != null) {
+                                historyOrderItem.setCity(ed.toString());
+                            }
+                            break;
+                        case 3:
+                            ed = editTextZipCode.getText();
+                            if (ed != null) {
+                                historyOrderItem.setZipCode(ed.toString());
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
         });
     }
@@ -144,27 +186,26 @@ public class OrderFragment extends Fragment {
     private void setupButtonBack() {
         btnBack.setOnClickListener(view -> {
             Gson gson = new Gson();
-            ((FragmentCommunicator) getActivity()).takeAction(
-                    FragmentAction.BACK_SELECT_TOPPINGS,
-                    gson.toJson(selectedToppings)
-            );
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(
+                        FragmentAction.BACK_SELECT_TOPPINGS,
+                        gson.toJson(historyOrderItem)
+                );
+            }
         });
     }
 
     private void setupButtonOrder() {
         btnOrder.setOnClickListener(view -> {
-            HistoryOrderItem order = new HistoryOrderItem(
-                    selectedToppings,
-                    editTextName.getText().toString(),
-                    editTextAddress.getText().toString(),
-                    editTextCity.getText().toString(),
-                    editTextZipCode.getText().toString()
-            );
             Gson gson = new Gson();
-            ((FragmentCommunicator) getActivity()).takeAction(
-                    FragmentAction.PROCEED_ORDER,
-                    gson.toJson(order)
-            );
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(
+                        FragmentAction.PROCEED_ORDER,
+                        gson.toJson(historyOrderItem)
+                );
+            }
         });
     }
 }

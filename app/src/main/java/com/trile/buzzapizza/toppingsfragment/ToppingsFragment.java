@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.homefragment.HistoryOrderItem;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
@@ -27,7 +28,7 @@ import java.util.List;
 public class ToppingsFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String TOPPINGS = "TOPPINGS";
+    private static final String HISTORY_ORDER_ITEM = "HISTORY_ORDER_ITEM";
 
     private static final List<Topping> PREDEFINED_TOPPINGS = new ArrayList<>(
             Arrays.asList(
@@ -42,6 +43,7 @@ public class ToppingsFragment extends Fragment {
             )
     );
 
+    private HistoryOrderItem historyOrderItem;
     private List<String> selectedToppings = new ArrayList<>();
 
     private ImageView btnCancel;
@@ -60,13 +62,14 @@ public class ToppingsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param selectedTopping selected topping items to be checked on grid view.
+     * @param historyOrderItem history order item to keep track through navigation
+     *                         from home page until order page.
      * @return A new instance of fragment ToppingsFragment.
      */
-    public static ToppingsFragment newInstance(ArrayList<String> selectedTopping) {
+    public static ToppingsFragment newInstance(HistoryOrderItem historyOrderItem) {
         ToppingsFragment fragment = new ToppingsFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(TOPPINGS, selectedTopping);
+        args.putParcelable(HISTORY_ORDER_ITEM, historyOrderItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +78,10 @@ public class ToppingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            selectedToppings = getArguments().getStringArrayList(TOPPINGS);
+            historyOrderItem = getArguments().getParcelable(HISTORY_ORDER_ITEM);
+            selectedToppings = historyOrderItem.getToppings();
+        } else {
+            historyOrderItem = new HistoryOrderItem();
         }
     }
 
@@ -99,24 +105,36 @@ public class ToppingsFragment extends Fragment {
     }
 
     private void setupButtonCancel() {
-        btnCancel.setOnClickListener(view ->
-                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CANCEL, null)
-        );
+        btnCancel.setOnClickListener(view -> {
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(FragmentAction.CANCEL, null);
+            }
+        });
     }
 
     private void setupButtonBack() {
-        btnBack.setOnClickListener(view ->
-                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.BACK_HOME_PAGE, null)
-        );
+        btnBack.setOnClickListener(view -> {
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(FragmentAction.BACK_HOME_PAGE, null);
+            }
+        });
     }
 
     private void setupButtonNext() {
         btnNext.setOnClickListener(view -> {
+            List<String> selectedToppings = toppingsGridAdapter.getSelectedToppings();
+            historyOrderItem.setToppings(selectedToppings);
+
             Gson gson = new Gson();
-            ((FragmentCommunicator) getActivity()).takeAction(
-                    FragmentAction.NEXT_FILL_ORDER_INFO,
-                    gson.toJson(toppingsGridAdapter.getSelectedToppings())
-            );
+            FragmentCommunicator fc = (FragmentCommunicator) getActivity();
+            if (fc != null) {
+                fc.takeAction(
+                        FragmentAction.NEXT_FILL_ORDER_INFO,
+                        gson.toJson(historyOrderItem)
+                );
+            }
         });
     }
 
@@ -125,11 +143,7 @@ public class ToppingsFragment extends Fragment {
         gridViewToppings.setAdapter(toppingsGridAdapter);
         gridViewToppings.setOnItemClickListener((adapterView, view, i, l) -> {
             Boolean isAllToppingsDeselected = toppingsGridAdapter.onClickToppingCard(i);
-            if (isAllToppingsDeselected) {
-                btnNext.setEnabled(false);
-            } else {
-                btnNext.setEnabled(true);
-            }
+            btnNext.setEnabled(!isAllToppingsDeselected);
         });
 
         if (selectedToppings.size() > 0) {

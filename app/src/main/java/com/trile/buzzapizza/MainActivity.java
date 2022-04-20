@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.trile.buzzapizza.homefragment.HistoryOrderItem;
 import com.trile.buzzapizza.homefragment.HomeFragment;
 import com.trile.buzzapizza.interfaces.FragmentAction;
@@ -17,7 +16,6 @@ import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 import com.trile.buzzapizza.orderfragment.OrderFragment;
 import com.trile.buzzapizza.toppingsfragment.ToppingsFragment;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
     }
 
     private List<HistoryOrderItem> getMockData() {
-        List<HistoryOrderItem> items = new ArrayList();
+        List<HistoryOrderItem> items = new ArrayList<>();
         items.add(new HistoryOrderItem(
                 Arrays.asList("tomatoes", "mushrooms", "olives", "Jalapenos"),
                 "Name 1",
@@ -108,11 +106,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
     }
 
     private void onNavigateToSelectToppingsPage(String jsonData) {
-        Type toppingListType = new TypeToken<ArrayList<String>>() {}.getType();
         Gson gson = new Gson();
-        ArrayList<String> selectedToppings = gson.fromJson(jsonData, toppingListType);
+        HistoryOrderItem historyOrderItem = gson.fromJson(jsonData, HistoryOrderItem.class);
 
-        Fragment toppingsFragment = ToppingsFragment.newInstance(selectedToppings);
+        Fragment toppingsFragment = ToppingsFragment.newInstance(historyOrderItem);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -130,11 +127,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
     }
 
     private void onClickNextFillOrderInfo(String jsonData) {
-        Type toppingListType = new TypeToken<ArrayList<String>>() {}.getType();
         Gson gson = new Gson();
-        ArrayList<String> selectedToppings = gson.fromJson(jsonData, toppingListType);
+        HistoryOrderItem historyOrderItem = gson.fromJson(jsonData, HistoryOrderItem.class);
 
-        Fragment orderFragment = OrderFragment.newInstance(selectedToppings);
+        Fragment orderFragment = OrderFragment.newInstance(historyOrderItem);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
