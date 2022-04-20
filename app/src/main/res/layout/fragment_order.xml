@@ -121,11 +121,11 @@
             android:text="Back" />
 
         <Button
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_order"
             style="@style/Theme.BuzzaPizza.ButtonNavigation"
             android:layout_alignParentEnd="true"
             android:text="Order"
-            tools:enabled="false" />
+            android:enabled="false" />
 
     </RelativeLayout>
 

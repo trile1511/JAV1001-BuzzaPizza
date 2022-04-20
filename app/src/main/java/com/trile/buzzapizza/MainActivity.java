@@ -1,6 +1,7 @@
 package com.trile.buzzapizza;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -42,17 +43,33 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
     private List<HistoryOrderItem> getMockData() {
         List<HistoryOrderItem> items = new ArrayList();
         items.add(new HistoryOrderItem(
-                Arrays.asList("tomatoes", "mushrooms", "olives", "Jalapenos"))
-        );
+                Arrays.asList("tomatoes", "mushrooms", "olives", "Jalapenos"),
+                "Name 1",
+                "Address 1",
+                "City 1",
+                "Zip Code 1"
+        ));
         items.add(new HistoryOrderItem(
-                Arrays.asList("onions", "Pepperoni", "tomatoes"))
-        );
+                Arrays.asList("onions", "Pepperoni", "tomatoes"),
+                "Name 2",
+                "Address 2",
+                "City 2",
+                "Zip Code 2"
+        ));
         items.add(new HistoryOrderItem(
-                Arrays.asList("Mushrooms", "bacon", "green peppers", "olives"))
-        );
+                Arrays.asList("Mushrooms", "bacon", "green peppers", "olives"),
+                "Name 3",
+                "Address 3",
+                "City 3",
+                "Zip Code 3"
+        ));
         items.add(new HistoryOrderItem(
-                Arrays.asList("bacon", "Green peppers", "pepperoni", "olives"))
-        );
+                Arrays.asList("bacon", "Green peppers", "pepperoni", "olives"),
+                "Name 4",
+                "Address 4",
+                "City 4",
+                "Zip Code 4"
+        ));
         return items;
     }
 
@@ -74,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
                 onClickNextFillOrderInfo(jsonData);
                 break;
             case PROCEED_ORDER:
+                onClickProceedOrder(jsonData);
                 break;
             default:
                 break;
@@ -122,5 +140,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_main, orderFragment);
         fragmentTransaction.commit();
+    }
+
+    private void onClickProceedOrder(String jsonData) {
+        Toast.makeText(this, "Order Successfully!", Toast.LENGTH_LONG).show();
     }
 }

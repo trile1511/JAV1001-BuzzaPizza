@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.homefragment.HistoryOrderItem;
 import com.trile.buzzapizza.interfaces.FragmentAction;
 import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
@@ -44,7 +45,7 @@ public class OrderFragment extends Fragment {
     );
 
     private Button btnBack;
-    private Button btnNext;
+    private Button btnOrder;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -87,7 +88,7 @@ public class OrderFragment extends Fragment {
         editTextZipCode = view.findViewById(R.id.edit_text_zip_code);
 
         btnBack = view.findViewById(R.id.btn_back);
-        btnNext = view.findViewById(R.id.btn_next);
+        btnOrder = view.findViewById(R.id.btn_order);
 
         setupButtonCancel();
 
@@ -97,6 +98,8 @@ public class OrderFragment extends Fragment {
         setupEditText(editTextZipCode, 3);
 
         setupButtonBack();
+
+        setupButtonOrder();
 
         return view;
     }
@@ -144,6 +147,23 @@ public class OrderFragment extends Fragment {
             ((FragmentCommunicator) getActivity()).takeAction(
                     FragmentAction.BACK_SELECT_TOPPINGS,
                     gson.toJson(selectedToppings)
+            );
+        });
+    }
+
+    private void setupButtonOrder() {
+        btnOrder.setOnClickListener(view -> {
+            HistoryOrderItem order = new HistoryOrderItem(
+                    selectedToppings,
+                    editTextName.getText().toString(),
+                    editTextAddress.getText().toString(),
+                    editTextCity.getText().toString(),
+                    editTextZipCode.getText().toString()
+            );
+            Gson gson = new Gson();
+            ((FragmentCommunicator) getActivity()).takeAction(
+                    FragmentAction.PROCEED_ORDER,
+                    gson.toJson(order)
             );
         });
     }

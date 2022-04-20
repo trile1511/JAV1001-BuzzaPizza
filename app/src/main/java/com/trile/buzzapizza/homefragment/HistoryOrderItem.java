@@ -8,9 +8,19 @@ import java.util.List;
 
 public class HistoryOrderItem implements Parcelable {
     private List<String> toppings = new ArrayList();
+    private String name;
+    private String address;
+    private String city;
+    private String zipCode;
     private String toppingsText;
 
-    public HistoryOrderItem(List<String> toppings) {
+    public HistoryOrderItem(
+            List<String> toppings,
+            String name,
+            String address,
+            String city,
+            String zipCode
+    ) {
         this.toppings.addAll(toppings);
 
         // Convert from array list of toppings to a string with comma-separated toppings
@@ -36,12 +46,20 @@ public class HistoryOrderItem implements Parcelable {
 
     protected HistoryOrderItem(Parcel in) {
         toppings = in.createStringArrayList();
+        name = in.readString();
+        address = in.readString();
+        city = in.readString();
+        zipCode = in.readString();
         toppingsText = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringList(toppings);
+        dest.writeString(name);
+        dest.writeString(address);
+        dest.writeString(city);
+        dest.writeString(zipCode);
         dest.writeString(toppingsText);
     }
 
@@ -64,6 +82,38 @@ public class HistoryOrderItem implements Parcelable {
 
     public List<String> getToppings() {
         return toppings;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getToppingsText() {
