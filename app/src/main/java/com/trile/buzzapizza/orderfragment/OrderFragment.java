@@ -101,6 +101,11 @@ public class OrderFragment extends Fragment {
         setupEditText(editTextCity, 2);
         setupEditText(editTextZipCode, 3);
 
+        editTextName.setText(historyOrderItem.getName());
+        editTextAddress.setText(historyOrderItem.getAddress());
+        editTextCity.setText(historyOrderItem.getCity());
+        editTextZipCode.setText(historyOrderItem.getZipCode());
+
         setupButtonBack();
 
         setupButtonOrder();
