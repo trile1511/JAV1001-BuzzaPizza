@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.trile.buzzapizza.R;
 
 import java.util.ArrayList;
@@ -23,6 +26,16 @@ public class OrderFragment extends Fragment {
     private static final String SELECTED_TOPPINGS = "SELECTED_TOPPINGS";
 
     private List<String> selectedToppings;
+
+    private ImageView btnCancel;
+
+    private TextInputEditText editTextName;
+    private TextInputEditText editTextAddress;
+    private TextInputEditText editTextCity;
+    private TextInputEditText editTextZipCode;
+
+    private Button btnBack;
+    private Button btnNext;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -56,6 +69,16 @@ public class OrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order, container, false);
+
+        btnCancel = view.findViewById(R.id.btn_cancel);
+
+        editTextName = view.findViewById(R.id.edit_text_name);
+        editTextAddress = view.findViewById(R.id.edit_text_address);
+        editTextCity = view.findViewById(R.id.edit_text_city);
+        editTextZipCode = view.findViewById(R.id.edit_text_zip_code);
+
+        btnBack = view.findViewById(R.id.btn_back);
+        btnNext = view.findViewById(R.id.btn_next);
 
         return view;
     }
