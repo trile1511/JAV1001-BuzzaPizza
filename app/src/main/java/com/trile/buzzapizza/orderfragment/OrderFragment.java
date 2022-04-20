@@ -101,16 +101,26 @@ public class OrderFragment extends Fragment {
         setupEditText(editTextCity, 2);
         setupEditText(editTextZipCode, 3);
 
-        editTextName.setText(historyOrderItem.getName());
-        editTextAddress.setText(historyOrderItem.getAddress());
-        editTextCity.setText(historyOrderItem.getCity());
-        editTextZipCode.setText(historyOrderItem.getZipCode());
-
         setupButtonBack();
 
         setupButtonOrder();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        editTextName.setText(historyOrderItem.getName());
+        editTextAddress.setText(historyOrderItem.getAddress());
+        editTextCity.setText(historyOrderItem.getCity());
+        editTextZipCode.setText(historyOrderItem.getZipCode());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        updateInputDataToHistoryOrderItemList();
     }
 
     private void setupButtonCancel() {
@@ -152,37 +162,6 @@ public class OrderFragment extends Fragment {
                 // But still empty => Show error
                 if (et.getText() != null && et.getText().toString().isEmpty()) {
                     et.setError(getResources().getString(R.string.field_required));
-                } else {
-                    // Field is filled => Save it
-                    Editable ed;
-                    switch (position) {
-                        case 0:
-                            ed = editTextName.getText();
-                            if (ed != null) {
-                                historyOrderItem.setName(ed.toString());
-                            }
-                            break;
-                        case 1:
-                            ed = editTextAddress.getText();
-                            if (ed != null) {
-                                historyOrderItem.setAddress(ed.toString());
-                            }
-                            break;
-                        case 2:
-                            ed = editTextCity.getText();
-                            if (ed != null) {
-                                historyOrderItem.setCity(ed.toString());
-                            }
-                            break;
-                        case 3:
-                            ed = editTextZipCode.getText();
-                            if (ed != null) {
-                                historyOrderItem.setZipCode(ed.toString());
-                            }
-                            break;
-                        default:
-                            break;
-                    }
                 }
             }
         });
@@ -190,6 +169,7 @@ public class OrderFragment extends Fragment {
 
     private void setupButtonBack() {
         btnBack.setOnClickListener(view -> {
+            updateInputDataToHistoryOrderItemList();
             Gson gson = new Gson();
             FragmentCommunicator fc = (FragmentCommunicator) getActivity();
             if (fc != null) {
@@ -203,6 +183,7 @@ public class OrderFragment extends Fragment {
 
     private void setupButtonOrder() {
         btnOrder.setOnClickListener(view -> {
+            updateInputDataToHistoryOrderItemList();
             Gson gson = new Gson();
             FragmentCommunicator fc = (FragmentCommunicator) getActivity();
             if (fc != null) {
@@ -212,5 +193,25 @@ public class OrderFragment extends Fragment {
                 );
             }
         });
+    }
+
+    private void updateInputDataToHistoryOrderItemList() {
+        Editable ed;
+        ed = editTextName.getText();
+        if (ed != null) {
+            historyOrderItem.setName(ed.toString());
+        }
+        ed = editTextAddress.getText();
+        if (ed != null) {
+            historyOrderItem.setAddress(ed.toString());
+        }
+        ed = editTextCity.getText();
+        if (ed != null) {
+            historyOrderItem.setCity(ed.toString());
+        }
+        ed = editTextZipCode.getText();
+        if (ed != null) {
+            historyOrderItem.setZipCode(ed.toString());
+        }
     }
 }
