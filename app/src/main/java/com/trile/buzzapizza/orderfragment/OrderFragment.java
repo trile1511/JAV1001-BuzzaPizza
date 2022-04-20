@@ -12,7 +12,10 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.trile.buzzapizza.R;
+import com.trile.buzzapizza.interfaces.FragmentAction;
+import com.trile.buzzapizza.interfaces.FragmentCommunicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,12 +89,22 @@ public class OrderFragment extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnNext = view.findViewById(R.id.btn_next);
 
+        setupButtonCancel();
+
         setupEditText(editTextName, 0);
         setupEditText(editTextAddress, 1);
         setupEditText(editTextCity, 2);
         setupEditText(editTextZipCode, 3);
 
+        setupButtonBack();
+
         return view;
+    }
+
+    private void setupButtonCancel() {
+        btnCancel.setOnClickListener(view ->
+                ((FragmentCommunicator) getActivity()).takeAction(FragmentAction.CANCEL, null)
+        );
     }
 
     private void setupEditText(TextInputEditText editText, int position) {
@@ -122,6 +135,16 @@ public class OrderFragment extends Fragment {
             if (!focused && et.getText().toString().isEmpty()) {
                 et.setError(getResources().getString(R.string.field_required));
             }
+        });
+    }
+
+    private void setupButtonBack() {
+        btnBack.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            ((FragmentCommunicator) getActivity()).takeAction(
+                    FragmentAction.BACK_SELECT_TOPPINGS,
+                    gson.toJson(selectedToppings)
+            );
         });
     }
 }

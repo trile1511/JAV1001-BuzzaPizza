@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
                 onClickCustomizePizza();
                 break;
             case UPDATE_HISTORY_ORDER:
-                onClickHistoryOrderItem(jsonData);
+            case BACK_SELECT_TOPPINGS:
+                onNavigateToSelectToppingsPage(jsonData);
                 break;
             case BACK_HOME_PAGE:
             case CANCEL:
@@ -71,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
                 break;
             case NEXT_FILL_ORDER_INFO:
                 onClickNextFillOrderInfo(jsonData);
-                break;
-            case BACK_SELECT_TOPPINGS:
                 break;
             case PROCEED_ORDER:
                 break;
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCommunica
         fragmentTransaction.commit();
     }
 
-    private void onClickHistoryOrderItem(String jsonData) {
+    private void onNavigateToSelectToppingsPage(String jsonData) {
         Type toppingListType = new TypeToken<ArrayList<String>>() {}.getType();
         Gson gson = new Gson();
         ArrayList<String> selectedToppings = gson.fromJson(jsonData, toppingListType);
