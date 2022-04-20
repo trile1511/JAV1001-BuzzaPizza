@@ -5,4 +5,9 @@
     <string name="text_history_orders">History Orders</string>
     <string name="edit">Edit</string>
     <string name="done">Done</string>
+    <string name="hint_required_edit_text_name">Name <font color='#FF0000'>*</font></string>
+    <string name="hint_required_edit_text_address">Address <font color='#FF0000'>*</font></string>
+    <string name="hint_required_edit_text_city">City <font color='#FF0000'>*</font></string>
+    <string name="hint_required_edit_text_zip_code">Zip Code <font color='#FF0000'>*</font></string>
+    <string name="field_required">Field Required</string>
 </resources>
